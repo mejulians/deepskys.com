@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-us">
+<!-- Newt-Web: A Newtonian Telescope CAD Program
+				
+Copyright (C) 2011 Kenneth H. Slater
+				
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License 
+Version 2 as published by the Free Software Foundation.
+				
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+				
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Newt-Web is a Newtonian Telescope Web Application with Ray Tracing and Graphic Dispaly">
+<meta name="keywords" content="Telescope Design, Newtonian Design, Ray Tracing, Web Application">
+<meta name="author" content="Ken Slater">
+<title>Newt-Web Help: Application</title>
+<link rel="shortcut icon" href="telescope.ico">
+<link rel="stylesheet" href="newt-web.css">
+<script type="text/javascript" src="newt-web.js"></script>
+</head>
+
+<body onload="startup_help();">
+<div id="page">
+    <header>
+		<h1>Newt-Web Help: Application</h1>
+		<p class="help-ver">for Program Version:&nbsp;<span class="help-ver-data" id="help-pver">?</span>
+		and File Version:&nbsp;<span class="help-ver-data" id="help-fver">?</span></p>
+    </header>
+
+    <div class="text-pane help-page">
+		<h2>Introduction</h2>
+		<p>This help page is devoted to topics about running the application. It deals with topics related to
+		 computers, web browsers and the internet. See this page for help about <a href="newt-help-scope.html">Newtonian Telescope
+		 Design</a>.</p>
+		<p>In the application, we use this icon <a class="help" id="help-icon" href="#help-icon" title="Help Icon">?</a>&nbsp; to link to help topics 
+		relevant to the item it is near. If you hover over the icon for a 
+		short time, the help topic it is linked to will pop up.</p>
+	
+		<h2>Topics in this Document</h2>
+		<div class="link_btn">
+			<a class="link_btn" href="#Tech">Required Technologies</a>
+			<a class="link_btn" href="#Browsers">Browsers </a>
+			<a class="link_btn" href="#Screen">Screen Size</a>
+			<a class="link_btn" href="#LocalStorage">Local Storage</a>
+			<a class="link_btn" href="#Files">Files</a>
+			<a class="link_btn" href="#Samples">Loading Samples</a>
+			<a class="link_btn" href="#Diagonal">Diagonal Sizing</a>
+			<a class="link_btn" href="#RayTrace">Ray Trace</a>
+			<a class="link_btn" href="#Tubes">Non-Round Tubes</a>
+			<a class="link_btn" href="#Printing">Printing</a>
+			<a class="link_btn" href="#Privacy">Privacy</a>
+			<a class="link_btn" href="#Problems">Problem Reports</a>
+		</div>
+		<h2 id="Tech">Required Technologies</h2>
+		<p>Newt-Web is a Computer Aided Design application that has been built to run in a web browser, without having 
+		to be installed on your computer or device. It uses technology that was 
+		standardized in the late 2000&#39;s and started to appear in web browsers in 
+		the 2010-2011 timeframe. It uses the following key technologies to make 
+		it work:</p>
+		<p><b>Hyper Text Markup Language</b> (HTML) is the main &#39;language&#39; of the web, 
+		and is where the content of a web page is defined. It also defines 
+		supporting technologies that are used to manipulate and modify this 
+		content. HTML version 5 is just being fully implemented in web browsers 
+		in 2011, with some parts available everywhere and some parts currently 
+		having only partial or no support, with the expectation that over time 
+		all features will be supported. Newt-Web uses the &lt;canvas&gt; facility 
+		to draw the telescope and light paths in the Ray Trace pane. It uses
+		<a href="#LocalStorage">LocalStorage</a>, part of the DOM Storage facility, 
+		to store your design 
+		between sessions. It uses File Reading to open designs from files (File 
+		Reading may not be important to you, you may be satisfied with just 
+		using local storage).</p>
+		<p><b>Cascading Style Sheets</b> (CSS) are used to format the content for 
+		display. Just like HTML5, CSS3 is being gradually phased in starting in 
+		2009 over an extended period, piece by piece. Having full CSS support 
+		will make Newt-Web look visually nice, but if parts are missing it will 
+		still function, it will just not look as good. CSS3 features that 
+		Newt-Web uses are: corner-radius, box-shadow, text-shadow, and gradient 
+		to make selected items have rounded corners, shadows to add depth, and 
+		gradients to soften and give a 3-D appearance to some objects. In 
+		several cases we currently use some vendor specific experimental 
+		versions of these items because they are not available in standardized 
+		versions yet (i.e. -moz-... and -webkit-... and filter:... in the CSS files). Unlike 
+		many older web applications, the only image used in Newt-Web is the 
+		application icon.</p>
+		<p><b>JavaScript</b> is the programming language that does the calculations and 
+		makes the page interactive - when you click a tab in Newt-Web or change 
+		a value, it is JavaScript that makes the actual changes. You must have 
+		JavaScript enabled in your web browser (usually the default setting). 
+		All major browsers have all the JavaScript support that newt-Web needs.</p>
+
+		<h2 id="Browsers">Browsers</h2>
+		<p>There are currently four browsers that have more than 5% market 
+		share, and these are the ones we choose to test on and report here how 
+		they work. There are many other browsers that, if they have the needed 
+		support of standardized features, should work also. Since the next most 
+		popular browser has about 2% of the market, and others much less, we 
+		choose not to spend time testing them.</p>
+
+		<p>All listed web browsers are free to download and use, and we encourage you to use the 
+		<b>latest</b> version, which may be a higher version number than we list below. Besides likely working better with Newt-Web, the most
+		current versions of browsers are the most secure, and are also faster and have more modern
+		features than their older versions. Please upgrade to the latest version listed that 
+		is equal to or greater then the version we list.
+		</p>
+
+		<p>We only have Windows 7 machines to test on regularly, however we have done some testing 
+		on Unix/Linux machines and Apple products, but it has not been as through as on Windows. (Listed in alphabetical order)</p>
+
+		<p><b>Apple Safari 4 &amp; 5:</b> All needed functional features <b><i>except</i></b> file 
+		open. Using two -webkit- pre-standard 
+		formatting features. <a target="_blank" href="http://www.apple.com/safari/download/">Get 
+		Safari</a>.</p> 
+		<p><b>Google Chrome 9:</b> All needed functional features, using two -webkit- pre-standard 
+		formatting features. It is also the only browser that currently supports new form input 
+		fields that do automatic input validation. Currently the best browser for Newt-Web (it has 
+		more of the features that Newt-Web uses than any other browser), although as time goes the other 
+		browsers should catch up. <a target="_blank" href="http://www.google.com/chrome">Get Chrome</a>.</p>
+		<p><b>Microsoft Internet Explorer 9:</b> All needed functional features <b> <i>except</i></b> support 
+		for file open. We are using several filter: 
+		pre-standard formatting features. The visual appearance of Newt-Web is not 
+		as good as on the other browsers, text-shadowing in IE is visibly poorer than the others, 
+		and causes large size shadowed text to look pixilated. Also gradients do not respect bottom 
+		corner rounding while other browsers get this right. And in several cases we have had to 
+		program in JavaScript in more awkward and slower way because it does not yet support 
+		efficient constructs that all the other browsers do. Not recommended, other browsers are 
+		more functional.
+		<a target="_blank" href="http://www.microsoft.com/windows/internet-explorer/default.aspx">
+		Get Internet Explorer</a>.</p>
+		<p><b>Mozilla Firefox 4:</b> All needed functional features, good formatting support, we are only using -moz- pre-standard 
+		formatting features for gradient fills. A very good browser for Newt-Web.
+		<a target="_blank" href="http://www.mozilla.com/en-US/firefox/">Get Firefox</a>.</p>
+		<p><b>Mobile Devices</b>: Newt-Web has been casually tested on several 
+		mobile devices, as we encounter friends that let us do some testing. In 
+		general it is not an explicit goal to run on these small devices, but we 
+		try to do nothing that would prevent this.</p>
+		<ul>
+			<li><b>Android 2.1</b>: Fully functional <i>except</i> File Open and 
+			Save; Local storage works. Some formatting ugliness with the page headers, but nothing 
+			that prevents the information from being communicated.</li>
+			<li><b>iPod 3</b> &amp; <b>iPhone 3</b>: Fully functional <i>except</i> for Local Storage 
+		and File Open and Save, so there is no way to save and restore a design on 
+		these devices. </li>
+			<li><b> iPad 1</b>:Fully functional <i>except</i> for File 
+			Open and Save; Local storage works.</li>
+		</ul>
+
+		<p>&nbsp;See 
+		comments about <a href="newt-web.html">Screen Size</a> below.</p>
+
+		<h2 id="Screen">Screen Size</h2>
+		<p>Newt-Web is written to run on and is tested on a browser of a minimum total size of 800 x 600 
+		(Newt-Web has less then this to use after window borders and browser controls are 
+		subtracted), 
+		so it should work on small devices such netbooks and large tablets. It is a not goal
+		to run on smaller screens, and if compressed too much the display will start to behave
+		badly. Many smaller devices do scroll and zoom web pages rather than shrink them, so if there
+		is the necessary HTML5 feature support, it will run on smart phones and 
+		small tablets.</p>
+
+		<p>The Ray Trace window benefits from a larger screen, and will expand to use as much space 
+		as it is given. The zoom feature does
+		allow important areas to be examined even on smaller screens.</p>
+
+		<h2 id="LocalStorage">Local Storage</h2>
+		<p>Local Storage is an HTML5 feature which allows a web page to store data on your computer.
+		To prevent malicious web pages from infecting your computer with malware or viruses, this storage
+		is NOT a computer file that you, or other parts of your computer, have access to - it is stored in
+		a special place, and is never treated like a program so it cannot do bad things to your machine.</p>
+
+		<p>While Local Storage is convenient to store your telescope designs, it does not allow your design
+		to be sent to a friend. It is also not shared between different brands of browsers (each brand of
+		browser on your computer has its own local storage). So it is fast and easy to use, and perfect
+		for use when you are refining your design. In order to share your design, you must get it into
+		a <a href="#Files">File</a>.</p>
+
+		<p>Locally stored designs are referred to by a design name, which is similar to a file 
+		name. To initially store a design, type a Design Name into the 
+		<span lang="en-us"></span>Design Name input box, 
+		and click the Save As button. Once the design has been given a design name, you can save 
+		again by clicking the Save Design button (the active design name is show above this button).</p>
+
+		<p>Your stored designs are listed in the left hand box of the Local 
+		Storage area of the File tab. Click the radio button to the left of the 
+		design name to select a stored design; you can then open it, rename it 
+		or delete it. Renaming requires you to select the design you wish to rename, and then typing a new name for it in the design name box before you click 
+		the Rename Selected button.</p>
+
+		<p>Design names have no imposed length restrictions, but we suggest you keep them short. 
+		There a few characters you cannot use in design names:<b> / ? \ * : | &quot; &lt; &gt;</b></p>
+
+		<p>There is also a New Design button in the Local Storage area. This really has nothing to 
+		do with Local Storage, but it was a logical place to put it. When you click this button, a 
+		new design is loaded into memory that has all numeric items set to zero and all other items 
+		set to a default value. Click this when you want to start a new design from scratch.</p>
+
+		<h2 id="Files">Files</h2>
+		<p>Newt-Web save files are saved in the standard JSON text file format, the data fields 
+		are specific to Newt-Web. The file contains a version 
+		number, so that we can make changes to the format in the future, if 
+		warranted, and still be able to read older versions of Newt-Web files in 
+		newer versions of this program. <i>Note that some mobile devices do not 
+		have a user visible file system, and hence you cannot open and save 
+		files.</i></p>
+		<p id="FileOpen"><b>Opening a File:</b> On the File tab, you can use the
+		<i>Open a .newt 
+		File</i> section to browse to a computer file and read it into Newt-Web. 
+		Newt-Web can only read Newt-Web save files (.newt file type by 
+		convention), not the old Newt-Win files of type .NWT. Some browsers 
+		support drag-and-drop of files, you may be able to drag a file into this 
+		area to select it instead of using the browse button. If drag-and-drop 
+		is active, the background of the Open area will change to light blue 
+		when you drag a file over it.</p>
+		<p id="FileSave"><b>Saving a File:</b> As explained 
+		previously in the <a href="#LocalStorage">Local Storage</a> section, web browsers cannot 
+		directly write files to your computer - that 
+		would be a terrible security problem. Therefore, we have to do extra 
+		work to save a file from Newt-Web. When you press the Save File button, 
+		we upload your design data to a temporary file on our server, and then 
+		immediately push it back to you as a file download. When the download 
+		dialog box appears, select a location to save the file in. As soon as 
+		the download is complete, or canceled, the temporary file is deleted on 
+		our server. See our <a href="#Privacy">Privacy Policy</a>.</p>
+
+		<h2 id="Samples">Loading Samples</h2>
+		<p>On the Files tab, we provide several sample designs to load into Newt-Web. You are welcome
+		to experiment with these, modify them as you wish. You never have to worry about losing the
+		original sample, because you can not overwrite the read-only samples. You can, of course,
+		save your modifications to <a href="#LocalStorage">Local Storage</a> or export as a 
+		<a href="#Files">File</a>.</p>
+		<p>The sample files included are:</p>
+		<ul>
+		<li>WHITE: A generic 6&quot; f/8 - not optimized (this is the default scope on startup)</li>
+		<li>BLACK: A 4&frac14;&quot; f/4 - not optimized</li>
+		<li>BLUE: A 10&quot; f/5.6 - a good deep-sky scope</li>
+		<li>RED: A 6&quot; f/11 - a good planetary scope</li>
+		<li>YELLOW: A 6&quot; f/7.5 - a good general purpose scope.</li>
+		</ul>
+		<p>These files are telescopes the authors have owned (first four Dale Keller, last one Ken Slater) and can be used 
+		as examples.&nbsp; They aren&#39;t perfect, but they are closer than they were before using this 
+		program.&nbsp; The WHITE and BLACK telescopes are pretty generic, and show a couple of the 
+		problems with non-optimized designs. The YELLOW telescope is optimized, and although the focal ratio is a bit smaller, it is very much an improved version of the WHITE sample.
+		Complete, detailed, step-by-step plans for building the YELLOW telescope can be found at
+		<a target="_blank" href="http://stellafane.org/tm/dob/index.html">Stellafane.org</a>; this 
+		page also includes some additional discussion about using Newt, how to design a good 
+		telescope, and solving problems that Newt reports.</p>
+
+		<h2 id="Diagonal">Diagonal Sizing</h2>
+
+		<p>Diagonal sizing is one the most difficult parts of Newtonian design, because it involves 
+		conflicting goals; You would like to maximize the size of your diagonal to get the most 
+		illuminated area in your eyepiece and therefore the brightest image; You would also like to 
+		minimize the size of your diagonal to improve image contrast and cast as small a shadow as 
+		possible on your primary mirror. Newt-Web adds some Diagonal Sizing Assistance to the 
+		Specifications tab, right under the place you specify the Diagonal Minor Axis. Here is some 
+		quick help to use these tools - but we also suggest your read the excellent advice given in 
+		the <a href="newt-help-scope.html">Newtonian Design Help</a> page, especially the sections 
+		on <a href="newt-help-scope.html#ImproperDesign">Improper Design</a> and&nbsp;
+		<a href="newt-help-scope.html#IlluminationSize">Illumination Size</a>.</p>
+
+		<p>Before you work on selecting the final size of your diagonal, you should fix any problems 
+		highlighted in the status box in the header. Some of these fixes may involved adjusting the 
+		current diagonal size. A quick way to do this is click the Calc button in the Diagonal 
+		Sizing Assistance area (this is an integrative calculation, and may take a few seconds). 
+		When done, it will produce two numbers, the minimum and maximum diagonal size that are 
+		status-box error free. Pick a size in the middle of this range for starting, and then make 
+		sure there are no other errors to be fixed.</p>
+
+		<p><i>Note: If the range returned by the calc button is reversed, that is the large number 
+		is first, your telescope is one of those hard-to-make-right designs, such as the Black sample, 
+		and you will have to compromise and live with some major design shortcomings.</i></p>
+
+		<p>In picking an illumination size, you need to think about how you will use the scope and 
+		what it is designed for; high magnification planetary scopes can get away with a smaller 
+		illuminated area than wide-field deep-sky scopes can. A high focal ratio scope is easiest 
+		to maximize 100% illuminated area size with a &#39;small&#39; diagonal; low focal ratio scopes need 
+		larger diagonals to achieve the same results (because the light cone is wider when it 
+		reaches the diagonal). In any event, general advice for every situation is hard 
+		to give, but if 
+		you are a novice and struggling with &quot;how much is enough&quot; consider aiming for approximately a 
+		&frac12; inch or 12mm 100% illuminated diameter for the typical 6 to 8 inch (150 to 200mm) f/6 to f/8 
+		scope. <i>Do not minimize your diagonal such that you end up with a zero or tiny 100% illuminated 
+		diameter at the focal plane</i>.</p>
+
+		<p>Selecting the smallest size diagonal that provides the needed 100% Illumination Diameter 
+		is good - diagonals that are too large block more light from reaching your primary mirror, 
+		and there larger diffraction effects scatter more light into the image reducing contrast. A 
+		very general rule of thumb is to keep the diagonal minor axis at less than 20% of the 
+		diameter of the primary mirror. This is general guideline, the Yellow sample scope has a 22% 
+		obstruction and it performs beautifully. But smaller is better in this area, without 
+		comprising to an unusable illumination area at the focal plane.</p>
+
+		<h2 id="RayTrace">The Ray Trace Tab</h2>
+
+		<p>Newt-Web does a simple geometric ray trace of the telescope design to check for design problems. The results of this ray trace are presented 
+		in the Ray Trace tab, in a properly scaled cut-away diagram of a telescope, allowing you to 
+		visualize many of the parameters presented in the Performance and Dimensions tabs as well as 
+		see why 
+		warnings are issued in the Status Box.</p>
+
+		<p>Unlike the rest of Newt-Web, which is limited by design to be less than 800 pixels 
+		wide, the drawing area of the Ray Trace tab will grow as wide as possible so you can see 
+		your design at the largest possible scale. The height of the drawing area is automatically 
+		adjusted by the program to show the entire telescope with minimal white space above and 
+		below.</p>
+		
+		<p>The telescope drawing can get cluttered with rays, axis and baffles, so checkboxes are 
+		provided to turn each of these on and off individually. When the telescope tube is too small 
+		to allow baffles to be drawn, the baffle drawing is disabled and a warning message is 
+		displayed above the top of the tube. Unchecking the Baffles check box will also turn off the 
+		warning.</p>
+
+		<p>When the diagonal is too small to reflect a ray, the ray stops were it misses the 
+		diagonal (in reality, it would continue on out the front of the tube). When the 100% 
+		illuminated area is zero, the on center and 100% rays are truncated. When the 
+		75% illuminated area is zero, the 75% ray is truncated. Again, a warning is printed above 
+		the telescope tube when any of these conditions occur (if you are zoomed in, you may not see 
+		the warning).</p>
+
+		<p>When you zoom in, the drawing is shifted to the right so that the diagonal and focuser 
+		area is always visible, since that is the area where you want to be able to examine the 
+		rays, reflections and vignetting in detail. The line above the focuser is the focal plane, 
+		with gray representing the 75% illuminated area and gold representing the 100% illuminated 
+		area.</p>
+
+		
+		<h2 id="Tubes">Non-Round Tubes</h2>
+		<p>Newt-Web assumes you are building your telescope into a round tube, 
+		but there are certainly many fine telescopes built into square, 
+		hexagonal, octagonal or other shapes made from multiple flat sides. You 
+		can still use Newt-Web for your telescope design, you just need to make 
+		sure to adjust a couple of specifications as necessary.</p>
+		<p>A key specification is Tube Inside Diameter. For a non-round tube, 
+		calculate the diameter of an inscribed circle for your non-round tube 
+		and use that. This parameter is used in checking and calculating the Front Aperture Diameter 
+		and with other specifications discussed below to calculate the base 
+		height of the focuser.</p>
+		<p>In order to check vignetting at the focuser, the base height of the 
+		focuser is calculated (from the optical axis) by adding (Tube Inside 
+		Diameter / 2) to Tube Thickness. You must adjust the Tube Thickness so 
+		that this calculation works out properly. Note that it is possible to 
+		have a negative value in this parameter, as might occur if the focuser 
+		is mounted on an inset. Also note that if the focuser is centered on a 
+		flat side, it should be used normally, as the inscribed circle should be 
+		tangent to the flat side at the center of the focuser hole.</p>
+		<p>Baffle calculations may not work properly for non-round tubes.</p>
+		
+		
+		<h2 id="Printing">Printing</h2>
+		<p>There is no specific support for printing in Newt-Web - use the built 
+		in browser printing facilities. The relatively narrow format of our presentation prints well 
+		in portrait format, although on some browsers you may want to select &quot;Shrink to fit page 
+		width&quot; to insure your printing won&#39;t overflow to the right.</p>
+
+		<h2 id="Privacy">Privacy</h2>
+		<p>With the exception of <i>Save File</i>, all data is kept on your 
+		computer or device and no data or information is uploaded.</p>
+		<p>Due to necessary security rules that prevent web browsers from 
+		writing files to your computer, the <i>Save File</i> feature uploads 
+		your design data to our server so that it can be immediately downloaded 
+		and saved by you. While briefly on our server, your design data resides 
+		in a special type of file, a temporary file, that is deleted as soon as 
+		it is closed. It is not our policy to retain our use design data from 
+		this feature. However, system failures or bugs could possibly leave your 
+		data on our server; we will immediately delete any such data that we 
+		find. Your design data is also transmitted unencrypted while going to 
+		and from our server making it more susceptible to interception. However, 
+		since there should no data of value to a third party in this file, we do 
+		not believe this presents any risk to you.</p>
+
+		<h2 id="Problems">Problem Reports</h2>
+		<p>We always appreciate receiving problem reports, so we can investigate 
+		them, fix them if necessary and generally improve Newt-Web. You can 
+		submit problem reports to the e-mail address on the About tab. If this 
+		problem is related to a specific design please, please <a href="#FileSave">
+		Save your design to a File</a> in the file tab, and attach the file to 
+		your e-mail. Thank you (in advance) for helping to make Newt-Web better 
+		for everyone!</p>
+	</div>
+</div>
+</body></html>

@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html><html dir="ltr" lang="en-us">
+<!-- Newt-Web: A Newtonian Telescope CAD Program
+				
+Copyright (C) 2011 Kenneth H. Slater
+				
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License 
+Version 2 as published by the Free Software Foundation.
+				
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+				
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Newt-Web is a Newtonian Telescope Web Application with Ray Tracing and Graphic Dispaly">
+<meta name="keywords" content="Telescope Design, Newtonian Design, Ray Tracing, Web Application">
+<meta name="author" content="Ken Slater">
+<meta name="robots" content="index,follow">
+<title>Newt-Web Help: Version History</title>
+<link rel="shortcut icon" href="telescope.ico">
+<link rel="stylesheet" href="newt-web.css">
+<script type="text/javascript" src="newt-web.js"></script>
+</head>
+
+<body onload="startup_help();">
+<div id="page">
+	<header>
+		<h1>Newt-Web Help: Release History</h1>
+		<p class="help-ver">for Program Version:&nbsp;<span class="help-ver-data" id="help-pver">?</span>
+		and File Version:&nbsp;<span class="help-ver-data" id="help-fver">?</span></p>
+	</header>
+	
+    <div class="text-pane">
+	<h6>Version Numbering Scheme</h6>
+	<p>The Newt-Web version number takes this form: <b>Version A.B-CCCC Built on YYYY-MMM-DD</b>.</p>
+	<ul>
+		<li><b>A</b> is the Major Version Number, incremented only when many new features are added all at once, or the program configuration is substantially changed.</li>
+		<li><b>B</b> is the Minor Version Number, incremented on every release. It is reset to zero 
+		when the major version number changes.</li>
+		<li><b>CCCC</b> is the Edit Number. It is incremented every time the sources are modified, 
+		which usually occurs many times before a release. It is never reset.</li>
+		<li><b>YYYY-MMM-DDD</b> is the build date, and is updated whenever the edit number changes 
+		on a new day.</li>
+	</ul>
+
+		<p>There is also a File Version number of the form <b>A.B</b>, used when the save file 
+		version format changes, so that we can read older format files without issues.</p>
+		<hr>
+		<h6>Release History</h6>
+		<ul>
+			<li><b>V1.2-0085 Built on 2012-Apr-08</b>: Fixed a few HTML 5 
+			Validation issues, no functional changes.</li>
+			<li><b>V1.1-0084 Built on 2012-Mar-08</b>: Full HTML5 Conformance. 
+				Fixed units in reporting angular field of view diameters. 
+				Tube ID now automatically increased to be equal to Primary Diameter when it is smaller.</li>
+			<li><b>V1.0-0083 Built on 2011-Mar-22</b>: Initial Release now that IE9 &amp; FF4 are released.<hr></li>
+			<li><b>V0.22-0081 Built on 2011-Mar-09</b>: Release Candidate 3; 
+			File Save now through server; Drag&amp;Drop</li>
+			<li><b>V0.21-0075 Built on 2011-Mar-02</b>: Release Candidate 2; typos fixed, focuser tube gradient lightened to 
+			make vignetting easier to see.</li>
+			<li><b>V0.20-0074 Built on 2011-Mar-01</b>: Release Candidate; app cache removed due to browser 
+			instability.</li>
+			<li><b>V0.19-0072 Built on 2011-Feb-28</b>: Extensive testing, several fixes; Diagonal Sizing 
+			Assistance added</li>
+			<li><b>V0.18-0067 Built on 2011-Feb-26</b>: Browser version detection and warnings on startup, proofing, 
+			grammar &amp; 
+			consistency fixes.</li>
+			<li><b>V0.17-0065 Built on 2011-Feb-25</b>: Fixed zoom bug IE9rc; Illuminated Widths now not less than 0.</li>
+			<li><b>V0.16-0062 Built on 2011-Feb-24</b>: Recolor scope drawing, clip rays that miss diagonal.</li>
+			<li><b>V0.15-0058 Built on 2011-Feb-23</b>: Many formatting, help, title and HTML5 improvements.</li>
+			<li><b>V0.14-0055 Built on 2011-Feb-22</b>: Redid diagonal sizing, now one button for a range.</li>
+			<li><b>V0.13-0053 Built on 2011-Feb-22</b>: Added initial try at diagonal sizing.</li>
+			<li><b>V0.12-0050 Built on 2011-Feb-22</b>: Added zoom and automatic resizing of height in Ray Trace pane.</li>
+			<li><b>V0.11-0046 Built on 2011-Feb-21</b>: Telescope Drawing now operational, but no zoom.</li>
+			<li><b>V0.10-0044 Built on 2011-Feb-20</b>: Telescope Help, fixed bug in file export.</li>
+			<li><b>V0.9-0041 Built on 2011-Feb-19</b>: Local Storage initial implantation (needs 
+			more testing)</li>
+			<li><b>V0.8-0038 Built on 2011-Feb-17</b>: Off-line status in About tab</li>
+			<li><b>V0.7-0035 Built on 2011-Feb-16</b>: Off-line application caching, minor shadow 
+		tweaks.</li>
+			<li><b>V0.6-0030 Built on 2001-Feb-15</b>: Tested on IE9rc, Added Help Pane, Help Pages, cleaned up visual design. 
+			This page added and release history recording begins.</li>
+			<li><b>V0.1-0001 Built on 2011-Feb-05</b>: Newt-Web project started, Tabbed framework 
+			created and Newt 2.5 sources 
+			began being converted from C++ to JavaScript and made into a web application</li>
+		</ul>
+	
+</div></div>			
+</body></html>

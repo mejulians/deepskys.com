@@ -1,0 +1,534 @@
+<!DOCTYPE html><html dir="ltr" lang="en-us">
+<!-- Newt-Web: A Newtonian Telescope CAD Program
+				
+Copyright (C) 2011-2012 Kenneth H. Slater
+				
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License 
+Version 2 as published by the Free Software Foundation.
+				
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+				
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Newt-Web is a Newtonian Telescope Web Application with Ray Tracing and Graphic Dispaly">
+<meta name="keywords" content="Telescope Design, Newtonian Design, Ray Tracing, Web Application">
+<meta name="author" content="Ken Slater">
+<meta name="robots" content="index,follow">
+<title>Newt for the Web</title>
+<link rel="shortcut icon" href="telescope.ico">
+<link rel="stylesheet" href="newt-web.css">
+<script type="text/javascript" src="newt-web.js"></script>
+<script type="text/javascript" src="newt-file.js"></script>
+<script type="text/javascript" src="newt-specs.js"></script>
+<script type="text/javascript" src="newt-calc.js"></script>
+<script type="text/javascript" src="newt-info.js"></script>
+<script type="text/javascript" src="newt-trace.js"></script>
+<script type="text/javascript" src="newt-draw.js"></script>
+</head>
+
+<body onload="startup_app();" onresize="UpdateDraw( scope );">
+<div id="page">
+	<header>
+		<div id="status-box">
+			<table id="stat_tbl">
+				<tr><td><a target="_blank" href="newt-help-scope.html#ImproperDesign" title="Help on Improving Design">Diagonal too small to admit 100% ray</a>:</td>
+					<td id="stat_dts" class="stat_r">?</td></tr>
+				<tr><td><a href="newt-help-scope.html#Vignetting" target="_blank" title="Help on Vignetting">Vignetting of 75% ray at front aperture</a>:</td>
+					<td id="stat_vfa" class="stat_r">?</td></tr>
+				<tr><td><a target="_blank" href="newt-help-scope.html#Vignetting" title="Help on Vignetting">Vignetting at focuser of 100% ray</a>:</td>
+					<td id="stat_v100" class="stat_r">?</td></tr>
+				<tr><td><a target="_blank" href="newt-help-scope.html#Vignetting" title="Help on Vignetting">Vignetting at focuser of &nbsp;&nbsp;75% ray</a>:</td>
+					<td id="stat_v075" class="stat_r">?</td></tr>
+			</table>
+		</div>
+		<table id="header_tbl">
+			<tr><td colspan="3"><h1 title="Newt-Web: A Newtonian Telescope Design Web Application">Newt for the Web</h1></td></tr>
+			<tr><td id="hdr_title_label">Title:&nbsp;</td><td id="hdr_title">?</td><td id="hdr_prime">?</td></tr>
+			<tr><td id="hdr_notes_label">Notes:&nbsp;</td><td id="hdr_notes">?</td><td id="hdr_fl">?</td></tr>		
+		</table>
+	</header>
+	<!-- ===== TABS ===== -->
+	<nav id="tab-row">
+		<ul class="tab">
+			<li class="tab" id="tab_File" title="Load & Store Designs"><a onclick="changetab('File')">File</a></li>
+			<li class="tab" id="tab_Specifications" title="Edit the Telescope Design"><a onclick="changetab('Specifications')">Specifications</a></li>
+			<li class="tab" id="tab_Eyepiece" title="Eyepiece Performance with Current Design"><a onclick="changetab('Eyepiece')">Eyepieces</a></li>
+			<li class="tab" id="tab_RayTrace" title="See how light reflects in this Telescope"><a onclick="changetab('RayTrace')">Ray Trace</a></li>
+			<li class="tab" id="tab_Performance" title="Performance Data for this Telescope"><a onclick="changetab('Performance')">Performance</a></li>
+			<li class="tab" id="tab_Dimensions" title="Dimensions for Construction of this Telescope"><a onclick="changetab('Dimensions')">Dimensions</a></li>
+			<li class="tab tab-selected" id="tab_About" title="Basic Information about Newt-Web"><a onclick="changetab('About')">About</a></li>
+			<li class="tab" id="tab_Help" title="Help on this Application, Newtonian Design, Release History & Licensing"><a onclick="changetab('Help')">Help</a></li>
+		</ul>
+	</nav>
+	<div id="pane-row">
+	
+		<!-- ===== FILE PANE ===== -->
+		<div id="display_File" class="display-pane"><div class="text-pane">
+			<div id="modstatus">
+				<p>Design Modification Status: <output id="modified">?</output></p>
+			</div>
+
+			<h6>Local Storage <a class="help" href="newt-help-ap.html#LocalStorage" title="App Help: Local Storage" target="_blank">?</a></h6>
+			<table id="ls_tbl"><tr><td>
+				<div id="ls_list"></div> <!-- This is filled in with the stored design listing -->
+			</td><td>
+				<p>You have <output id="save_count">0</output> saved designs.</p>
+				<p>Selected: <output id="selected"><i>Noting Selected</i></output></p>
+				<div class="center_button">
+					<button id="btn_open" onclick="LSopen()">Open Selected</button>
+					<button id="btn_del" onclick="LSdelete()">Delete Selected</button>
+				</div>
+				<hr>
+				<p>Design Name: <input type="text" id="txt_name"></p>
+				<div class="center_button">
+					<button id="btn_svas" onclick="SaveAs();">Save As</button>
+					<button id="btn_ren" onclick="LSrename()">Rename Selected</button>
+				</div>
+				<hr>
+				<p>Current Design Name: <output id="save_name">?</output></p>
+				<div class="center_button">
+					<button id="btn_save" onclick="LSsave()">Save Design</button>
+				</div>
+				<hr>
+				<p>This button will 'zero out' everything and you can start with a clean slate.</p>
+				<div class="center_button">
+					<button id="btn_new" onclick="Load_NewDesign( scope );">New Design</button>
+				</div>
+			</td></tr></table>
+			<hr>
+			
+			<h6>Load a Sample Newt-Web Design <a class="help" href="newt-help-ap.html#Samples" title="App Help: Load Samples" target="_blank">?</a></h6>
+			<p class="note">The Yellow Sample Design is the build-it-youself Dob at <a href="http://stellafane.org/tm/dob/index.html" target="_blank">Stellafane.org/tm/dob</a></p>
+			<table id="load_samp">
+				<tr>
+					<td><button onclick="Load_Red( scope );"    title="8.5 Inch F5 Newtonian">Julians Newtonian</button></td>
+					<td><button onclick="Load_White( scope );"  title="6&quot; f/8 General Purpuse (has design problems) Newt-Web Startup Default">Load White Sample</button></td>
+					<td><button onclick="Load_Blue( scope );"   title="10&quot; f/5.6 Deep Sky Scope">Load Blue Sample</button></td>
+					<td><button onclick="Load_Black( scope );"  title="4&frac14;&quot; f/4 Wide Field Scope (has design problems)">Load Black Sample</button></td>
+					<td><button onclick="Load_Yellow( scope );" title="6&quot; f/7.5 General Purpose">Load Yellow Sample</button></td>
+				</tr>
+			</table>
+			<hr>
+	
+			<table id="opensave"><tr>
+				<td id="osl">
+					<h6>Open a .newt File <a class="help" href="newt-help-ap.html#Files" title="App Help: Files" target="_blank">?</a></h6>
+					<p class="note"><output id="filereadwarn">Not compatible with NewtWin .NWT files</output></p>
+					<input id="file_sel" type="file"><br>
+					<button id="file_load" onclick="ReadFile();">Open File</button>
+				</td>
+				<td id="osr">
+					<h6>Save a File to Your Computer <a class="help" href="newt-help-ap.html#Files" title="App Help: Files" target="_blank">?</a></h6>
+					<p class="note">Accomplished by round-triping through our server.</p>
+					<form id="save-form" name="saveForm" action="newt-save.php" method="post">
+						<input type="hidden" name="saveData" value="*None*"> 
+						<p>Save file name: <input id="file-name" name="fileName" type="text">.newt<br>
+						<button type="button" onclick="saveViaDownload()">Save File</button></p>
+					</form>
+				</td>
+			</tr></table>
+		</div></div>
+
+		<!-- ===== SPECIFICATIONS PANE ===== -->
+		<div id="display_Specifications" class="display-pane"><div class="text-pane">
+			<form id="SpecForm" name="SpecForm">
+				<fieldset id="telescope">
+					<legend>Newtonian Telescope Specifications</legend>
+					<p id="spec_hdr">Use this form to input and adjust your telescope design values.</p>
+					<div style="text-align:center">
+							Unit of Measure
+							<select name="units" onchange="specmod();">
+								<option value="inch">inch</option>
+								<option value="cm">cm</option>
+								<option value="mm">mm</option>
+							</select>
+					</div>
+				<fieldset id="project" class="background">
+					<legend>Project Info</legend>
+					<table class="spec_tbl">
+						<tr>
+							<td>Title</td>
+							<td><input name="title" type="text" class="input_wide" onchange="specmod();"></td>
+							<td class="spec_comment" style="vertical-align:top;" rowspan="2">These fields allow you to add a title to your<br>design and add notes or comments<br>
+							about a specific design</td>
+						</tr>
+						<tr>
+							<td>Notes</td>
+							<td><input name="notes" type="text" class="input_wide" onchange="specmod();"></td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset id="optics" class="background">
+					<legend>Optics</legend>
+					<table class="spec_tbl">
+						<tr>
+							<td class="c1">Primary Mirror Diameter</td>
+							<td><input name="PriDia" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment">Typically 4&frac14;, 6, 8, 10 or 12&frac12; inches</td>
+						</tr>
+						<tr>
+							<td class="c1">Focal Ratio</td>
+							<td><input name="FocRat" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment">= Focal Length / Primary Diameter</td>
+						</tr>
+						<tr id="spec_dma">
+							<td class="c1">Diagonal Mirror Minor Axis</td>
+							<td><input name="DiaAxs" id="dma" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Improper Design" href="newt-help-scope.html#ImproperDesign">?</a>
+							Typically .75, 1.0, 1.3, 1.52, 1.83 inch</td>
+						</tr>
+						<tr class="diag">
+							<td id="diag_hdr" colspan="3">Diagonal Sizing Assistance: Involves Conflicting Goals - Please Read Help
+							<a class="help" target="_blank" title="App Help: Diagonal Range" href="newt-help-ap.html#Diagonal">?</a></td>
+						</tr>
+						<tr class="diag">
+							<td class="c1" id="td_diag_range"><output id="diag_range"></output></td>
+							<td style="text-align:center"><button onclick="CalcDiagonal( scope )" type="button" title="This can take up to a minute, please be patient.">Calc</button></td>
+							<td class="spec_comment">Find range of error free diagonal sizes</td>
+						</tr>
+						<tr class="diag">
+							<td id="spec_100" colspan="2">100% Illuminated Diameter: <output id="spec_dia100">?</output></td>
+							<td class="spec_obs_note">Maximize, &frac12; inch or 12mm typical.</td>
+						</tr>
+						<tr class="diag">
+							<td id="spec_obs" colspan="2">Diagonal Obstruction of Primary Diameter: <output id="spec_osp">?</output>%</td>
+							<td class="spec_obs_note">Minimize, 20% or less is a good goal.</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset id="tube" class="background">
+					<legend>Tube</legend>
+					<table class="spec_tbl">
+						<tr>
+							<td class="c1">Tube Inside Diameter</td>
+							<td><input name="TubeID" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a>
+							Allow &frac12; to 1 inch around primary mirror</td>
+						</tr>
+						<tr>
+							<td class="c1">Tube Wall Thickness</td>
+							<td><input name="TubThk" type="number" onchange="specmod();"></td>
+							<td class="spec_comment">Adds to overall Focuser Height</td>
+						</tr>
+						<tr>
+							<td class="c1">Focuser to Front of Tube</td>
+							<td><input name="FocFrt" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment">Measure from Center of Focuser</td>
+						</tr>
+						<tr>
+							<td class="c1">Mirror Face to Back of Tube</td>
+							<td><input name="PriBck" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment">Allow room for Mirror Cell</td>
+						</tr>
+						<tr>
+							<td class="c1">Fixed Diameter Baffles</td>
+							<td><input name="FixBaf" type="checkbox" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Glare" href="newt-help-scope.html#Glare">?</a>
+							Tapered Baffles if not checked</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset id="focuser" class="background">
+					<legend>Focuser</legend>
+					<table class="spec_tbl">
+						<tr>
+							<td class="c1">Focuser Minimum Height</td>
+							<td><input name="FocHgt" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a>
+							Outside Tube to Top of Focuser</td>
+						</tr>
+						<tr>
+							<td class="c1">Spare Focuser In Travel</td>
+							<td><input name="SparIn" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Spare Focuser Travel" href="newt-help-scope.html#SpareFocuserTravel">?</a>
+							Allows for Eyepiece Field Stop Variations.</td>
+						</tr>
+						<tr>
+							<td class="c1">Additional Height for Camera</td>
+							<td><input name="CamHgt" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Using a Camera" href="newt-help-scope.html#UsingACamera">?</a>
+							Optional, to focus on Camera Film Plane</td>
+						</tr>
+						<tr>
+							<td class="c1">Focuser Inside Diameter</td>
+							<td><input name="FocID" type="number" min="0" onchange="specmod();"></td>
+							<td class="spec_comment"><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a>
+							Typically 1.25 or 2.00 inches</td>
+						</tr>
+					</table>
+				</fieldset>
+				</fieldset>
+			</form>
+		</div></div>
+
+		<!-- ===== EYEPIECES PANE ===== -->
+		<div id="display_Eyepiece" class="display-pane"><div class="text-pane">
+
+			<h6>Eyepiece Performance with this Telescope Design</h6>
+			<form name="EyepForm">
+			<table id="eye_tbl">
+				<tr>
+					<th>Eyepiece<br>Focal Length</th>
+					<th>Power</th>
+					<th>Exit<br>Pupil</th>
+					<th>Apparaent<br>Field</th>
+					<th>True<br>Field</th>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw0">&nbsp;</td>
+					<td id="eyep_xp0">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf0">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw1">&nbsp;</td>
+					<td id="eyep_xp1">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf1">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw2">&nbsp;</td>
+					<td id="eyep_xp2">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf2">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw3">&nbsp;</td>
+					<td id="eyep_xp3">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf3">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw4">&nbsp;</td>
+					<td id="eyep_xp4">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw5">&nbsp;</td>
+					<td id="eyep_xp5">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf5">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw6">&nbsp;</td>
+					<td id="eyep_xp6">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf6">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw7">&nbsp;</td>
+					<td id="eyep_xp7">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf7">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw8">&nbsp;</td>
+					<td id="eyep_xp8">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf8">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="number" min="0" name="eye_fl[]" class="eyep_fl" onchange="specmod();"> mm</td>
+					<td id="eyep_pw9">&nbsp;</td>
+					<td id="eyep_xp9">&nbsp;</td>
+					<td><input type="number" min="0" name="eye_af[]" class="eyep_af" onchange="specmod();">&deg;</td>
+					<td id="eyep_tf9">&nbsp;</td>
+				</tr>
+			</table></form>
+		</div></div>
+		
+		<!-- ===== RAY TRACE PANE ===== -->
+		<div id="display_RayTrace" class="display-pane">
+			<div id="draw-controls" class="text-pane">
+				Display:
+				<ul class="draw-list">
+					<li><input type="checkbox" checked="checked" onchange="UpdateDraw( scope );" id="drw_axis">Optical Axis (Blue)</li>
+					<li><input type="checkbox" checked="checked" onchange="UpdateDraw( scope );" id="drw_onctr">On-Center Rays (Green)</li>
+					<li><input type="checkbox" checked="checked" onchange="UpdateDraw( scope );" id="drw_100zn">100% Zone (Red)</li>
+					<li><input type="checkbox" checked="checked" onchange="UpdateDraw( scope );" id="drw_75zn">75% Zone (Yellow)</li>
+					<li><input type="checkbox" checked="checked" onchange="UpdateDraw( scope );" id="drw_bafl">Baffles</li>
+				</ul><br>
+				Ray Trace <a class="help" target="_blank" title="App Help: Ray Trace" href="newt-help-ap.html#RayTrace">?</a>
+				<span id="raytrace_spacer">&nbsp;</span>
+				Zoom in on Diagonal &amp; Focuser:
+				<ul class="draw-list">
+					<li><input type="radio" name="zoomgrp" class="zf" value="1" onchange="doZoom();" id="zf1" checked="checked">1x</li>
+					<li><input type="radio" name="zoomgrp" class="zf" value="2" onchange="doZoom();">2x</li>
+					<li><input type="radio" name="zoomgrp" class="zf" value="3" onchange="doZoom();">3x</li>
+					<li><input type="radio" name="zoomgrp" class="zf" value="4" onchange="doZoom();">4x</li>
+					<li><input type="radio" name="zoomgrp" class="zf" value="5" onchange="doZoom();">5x</li>
+				</ul>
+			</div>
+			<canvas id="scope-canvas"><p style="color:red; font-weight:bold; background-color:yellow; text-align:center; font-size:xx-large; padding:20px;">
+			This browser does not support drawing.<br>You need to upgrade to a browser that does.<br>
+			Read about supported browsers in <a target="_blank" href="newt-help-ap.html#Browsers">Application Help</a>.</p></canvas>
+		</div>
+
+		<!-- ===== PERMORMANCE PANE ===== -->		
+		<div id="display_Performance" class="display-pane"><div class="text-pane">
+			<h6>Performance Information for your Telescope</h6>
+			<p>The theoretical limiting magnitude for a <span id="perf_ob1">?</span> objective is <span id="perf_tlm">?</span>.</p>
+			<p>The obstruction of the primary surface area by the diagonal is <span id="perf_ops">?</span>% which results in a
+			reduction of light gathering ability. <a class="help" target="_blank" title="Newtonian Help: Improper Design" href="newt-help-scope.html#ImproperDesign">?</a></p>
+			<hr>
+			<p>The theoretical resolution (Dawes limit) for a <span id="perf_ob2">?</span> objective is <span id="perf_dl">?</span> arc seconds.</p>
+			<p>The obstruction of the diameter of the primary by the diagonal is <span id="perf_osp">?</span>%, which affects image quality by
+			increasing diffraction and lowering contrast. <a class="help" target="_blank" title="Newtonian Help: Improper Design" href="newt-help-scope.html#ImproperDesign">?</a></p>
+			<hr>
+			<p>Maximum useful power is about <span id="perf_mxp">?</span>x (for 50x per inch of aperture).</p>
+			<p>Minimum useful power is about <span id="perf_mnp">?</span>x (for a 7mm exit pupil).</p>
+			<hr>
+			<p>Angular field of view for the 100% illuminated area is <span id="perf_afv100">?</span>&deg;. 
+			The diameter is <span id="perf_dia100">?</span>
+				<a class="help" target="_blank" title="Newtonian Help: Illumination Size" href="newt-help-scope.html#IlluminationSize">?</a></p>
+			<p>Angular field of view for the 75% illuminated area is <span id="perf_afv75">?</span>&deg;. 
+			The diameter is <span id="perf_dia75">?</span>
+				<a class="help" target="_blank" title="Newtonian Help: Illumination Size" href="newt-help-scope.html#IlluminationSize">?</a></p>
+			<hr>
+			<p class="footnote">If you see "NaN" where you expected a number, the specifications resulted in incalculable results, such a division by zero or some other
+			mathematical problem. "NaN" is an abbreviation for Not a Number.</p>
+		</div></div>
+
+		<!-- ===== DIMENSIONS PANE ===== -->		
+		<div id="display_Dimensions" class="display-pane"><div class="text-pane">
+			<table id="dim_pane"><tr><td>
+				<h6>Dimensions for your Telescope</h6>
+				<table id="dim_tbl">
+					<tr><td>Unit of Measure</td><td id="dim_units">?</td><td></td></tr>
+					<tr><td>Primary Mirror Diameter</td><td id="dim_pridia">?</td><td></td></tr>
+					<tr><td>Focal Length</td><td id="dim_fl">?</td><td></td></tr>
+					<tr><td>Focal Ratio</td><td id="dim_fr">?</td><td></td></tr>
+					<tr><td>Tube Inside Diameter</td><td id="dim_tid">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a></td></tr>
+					<tr><td>Tube Thickness</td><td id="dim_tth">?</td><td></td></tr>
+					<tr><td>Focuser Minimum Height</td><td id="dim_fh">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a></td></tr>
+					<tr><td>Focuser Inside Diameter</td><td id="dim_fid">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a></td></tr>
+					<tr><td>Focuser Extra Travel</td><td id="dim_fet">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Spare Focuser Travel" href="newt-help-scope.html#SpareFocuserTravel">?</a></td></tr>
+					<tr><td>Focuser Camera Travel</td><td id="dim_fct">?</td><td>
+						<a class="help" target="_blank" title="Newtonian Help: Using a Camera" href="newt-help-scope.html#UsingACamera">?</a></td></tr>
+					<tr><td>Diagonal Minor Axis</td><td id="dim_dma">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Improper Design" href="newt-help-scope.html#ImproperDesign">?</a></td></tr>
+					<tr><td>Diagonal Offset</td><td id="dim_dof">?</td><td></td></tr>
+					<tr><td>100% Illumination Diameter</td><td id="dim_100">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Illumination Size" href="newt-help-scope.html#IlluminationSize">?</a></td></tr>
+					<tr><td>75% Illumination Diameter</td><td id="dim_075">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Illumination Size" href="newt-help-scope.html#IlluminationSize">?</a></td></tr>
+					<tr><td>Front Aperture Diameter</td><td id="dim_fad">?</td>
+						<td><a class="help" target="_blank" title="Newtonian Help: Vignetting" href="newt-help-scope.html#Vignetting">?</a></td></tr>
+					<tr><td>Mirror Face to Focuser Hole</td><td id="dim_m2f">?</td><td></td></tr>
+					<tr><td>Focuser to Front End of Tube</td><td id="dim_f2f">?</td><td></td></tr>
+					<tr><td>Mirror Face to Back of Tube</td><td id="dim_f2b">?</td><td></td></tr>
+					<tr><td>Tube Length</td><td id="dim_tl">?</td><td></td></tr>
+				</table>
+			</td><td>
+				<h6 >Dimensions for the Baffles <a class="help" target="_blank" title="Newtonian Help: Glare" href="newt-help-scope.html#Glare">?</a></h6>
+				<div id="bafs"></div>
+			</td></tr></table>
+			<hr>
+			<p class="footnote">If you see "NaN" where you expected a number, the specifications resulted in incalculable results, such a division by zero or some other
+			mathematical problem. "NaN" is an abbreviation for Not a Number.</p>
+		</div></div>
+		<!-- ===== ABOUT PANE ===== -->		
+		<div id="display_About" class="display-pane"><div class="text-pane">
+			<p id="about_sum">Newt for the Web (Newt-Web for short) is a Newtonian Telescope Computer Aided Design program. It ray 
+			traces a Newtonian telescope design checking for vignetting, optimizes diagonal size, calculates baffle sizes and positions, 
+			and produces performance and dimensional data for construction. 
+			It runs in your web browser - there is no need to install a program on your computer.</p>
+			
+			<p class="get_started"><b>To get started:</b></p>
+			<span class="get_started">Use the <span class="tab"><a onclick="changetab('File')" title="Load & Store Designs">File</a>
+			</span> tab to load an existing design or sample designs.</span><br>
+			<span class="get_started">Use the <span class="tab"><a onclick="changetab('Specifications')" title="Edit the Telescope Design">Specifications</a></span>
+			tab to enter a design of your choice.</span><br>
+			<span class="get_started">Click <a class="help" href="" title="Help Icon">?</a> for help on items it is near, 
+			or see the <span class="tab"><a onclick="changetab('Help')" title="Help on this Application, Newtonian Design, Release History & Licensing">Help</a>
+			</span> tab for a list of topics.</span><br>
+			<span class="get_started">Many items, such as tabs or buttons, provide extra information if you hover over them.</span>
+			
+			<hr>
+			
+			<h6 id="Abt_Ver">&lt;Version ID Palceholder&gt;</h6>
+			<p class="Abt_Ctr"><a href="newt-help-ver.html" target="_blank">&emsp;&nbsp;&nbsp;Newt-Web Release History</a><span class="abt_spacer3">&nbsp;</span>&nbsp;Copyright &copy; 2011-2012 by Kenneth H. Slater.<br>
+			E-Mail: <a href="mailto:newt-web@stellafane.org">newt-web@stellafane.org</a>
+			<span class="abt_spacer3">&nbsp;</span>
+			<a href="http://stellafane.org/tm/newt-web/newt-web.html">http://stellafane.org/tm/newt-web/newt-web.html</a>
+			</p>
+			
+			<p class="Abt_Ctr">Thanks to Dave Tabor, Julian Shull, Matt Considine, Michael Patterson, Dave Prowten, Glenn Becker &amp; Dale Keller<br>
+			for their help, expertise, ideas and advice during development of Newt-Web.<br>
+			Newt-Web is based upon NewtWin and the Newt25 sources by Dale Keller; 
+			See <a href="http://www.dalekeller.net/ATM/newtonians/newtsoft/newtsoft.htm" target="_blank"> Dale Keller's Newt Software Page</a></p>
+			<p id="abt-window">Browser Size: <output id="abt_window">? x ?</output></p>
+			<p>Screen Size: <output id="abt_screen">? x ?</output></p>
+			<hr>	
+			
+			
+			<p>Newt-Web is released under the <a target="_blank" href="newt-help-gpl.html">GNU General Public License Version 2</a> (<i>Click link to view</i>).</p>
+			<p>Source code for the current, running version. Right click and use the &quot;Save Link As...&quot; function to download and save each file.</p>
+			<table id="sources"><tr><td>
+			<ul>
+				<li><a href="newt-web.html">newt-web.html</a></li>
+				<li><a href="newt-web.css">newt-web.css</a></li>
+				<li><a href="newt-web.js">newt-web.js</a></li>
+				<li><a href="newt-save.php">newt-save.php</a></li>
+			</ul></td><td><ul>
+				<li><a href="newt-calc.js">newt-calc.js</a></li>
+				<li><a href="newt-file.js">newt-file.js</a></li>
+				<li><a href="newt-info.js">newt-info.js</a></li>
+				<li><a href="telescope.ico">telescope.ico</a></li>
+			</ul></td><td><ul>
+				<li><a href="newt-specs.js">newt-specs.js</a></li>
+				<li><a href="newt-trace.js">newt-trace.js</a></li>
+				<li><a href="newt-draw.js">newt-draw.js</a></li>
+			</ul></td><td><ul>
+				<li><a href="newt-help-ap.html">newt-help-ap.html</a></li>
+				<li><a href="newt-help-scope.html">newt-help-scope.html</a></li>
+				<li><a href="newt-help-ver.html">newt-help-ver.html</a></li>
+				<li><a href="newt-help-gpl.html">newt-help-gpl.html</a></li>
+			</ul>
+			</td></tr></table>
+		</div></div>
+		<!-- ===== HELP PANE ===== -->		
+		<div id="display_Help" class="display-pane"><div class="text-pane">	
+
+			<h6>General Help Information</h6>
+			<p>Click the Help Icon <a class="help" href="" title="Help Icon">?</a> for help on topics it is near. If you hover your mouse over the icon, the help topic it links to will
+			be displayed in a tiny pop-up window.</p>
+			<p>Help links in the Newt-Web application panes open in a new window in your browser. Note that many people choose an option in their browser to open new windows 
+			as new <i>browser</i> tabs (<i>not Newt-Web application tabs</i>).</p>
+
+			<h6><a class="link_btn" href="newt-help-ap.html" target="_blank">Newt-Web Application Help</a></h6>
+			<p>Application Help includes topics about how to save and restore designs between sessions, features needed to run Newt-Web, which major browsers support 
+			Newt-Web, screen sizes, printing, and reporting problems.</p>
+
+			<h6><a class="link_btn" href="newt-help-scope.html" target="_blank">Newtonian Telescope Design Help</a></h6>
+			<p>Newtonian Design Help includes topics about how to size your optics and telescope components to maximize performance, and how to solve problems that
+			Newt-Web reports about your design.</p>
+
+			<h6><a class="link_btn" href="newt-help-ver.html" target="_blank">Newt-Web Release History</a></h6>
+			<p>The release history of Newt-Web is available on this help page. It also explains the version numbering scheme.</p>
+
+			<h6><a class="link_btn" href="newt-help-gpl.html" target="_blank">GNU General Public License</a></h6>
+			<p>Newt-Web is release under the GNU General Public License (GPL) Version 2. Newt-Web source files are available on the About tab.</p>
+			
+		</div></div>
+	</div>
+</div>
+</body></html>

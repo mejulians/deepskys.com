@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Deepskys"
+AuthUserFile "/home/mejulian/.htpasswds/public_html/deepskys/passwd"
+require valid-user

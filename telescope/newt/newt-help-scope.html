@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html><html dir="ltr" lang="en-us">
+<!-- Newt-Web: A Newtonian Telescope CAD Program
+				
+Copyright (C) 2011 Kenneth H. Slater
+				
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License 
+Version 2 as published by the Free Software Foundation.
+				
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+				
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Newt-Web is a Newtonian Telescope Web Application with Ray Tracing and Graphic Dispaly">
+<meta name="keywords" content="Telescope Design, Newtonian Design, Ray Tracing, Web Application">
+<meta name="author" content="Ken Slater">
+<meta name="robots" content="index,follow">
+<title>Newt-Web Help: Telescope Design</title>
+<link rel="shortcut icon" href="telescope.ico">
+<link rel="stylesheet" href="newt-web.css">
+<script type="text/javascript" src="newt-web.js"></script>
+</head>
+
+<body onload="startup_help();">
+<div id="page">
+	<header>
+		<h1>Newt-Web Help: Telescope</h1>
+		<p class="help-ver">for Program Version:&nbsp;<span class="help-ver-data" id="help-pver">?</span>
+		and File Version:&nbsp;<span class="help-ver-data" id="help-fver">?</span></p>
+	</header>
+    <div class="text-pane help-page">
+	
+		<h2>Introduction</h2>
+
+		<p>This help page is devoted to topics about Designing a Newtonian Telescope. For help with 
+		running the application, topics related to computers, web browsers and the internet see the 
+		help page about the <a href="newt-help-ap.html">Newt-Web Application</a>.</p>
+		
+		<h2>Topics in this Document</h2>
+		<div class="link_btn">
+			<a class="link_btn" href="#Vignetting">Vignetting</a>
+			<a class="link_btn" href="#Glare">Glare (Baffles)</a>
+			<a class="link_btn" href="#ImproperDesign">Improper Design</a>
+			<a class="link_btn" href="#AtmosphericDistortion">Atmospheric Distortion</a>
+			<a class="link_btn" href="#IlluminationSize">Illumination Size</a>
+			<a class="link_btn" href="#VisualUse">Visual Use</a>
+			<a class="link_btn" href="#PhotographicUse">Photgraphic Use</a>
+			<a class="link_btn" href="#SpareFocuserTravel">Spare Focuser Travel</a>
+			<a class="link_btn" href="#UsingACamera">Using a Camera</a>
+			<a class="link_btn" href="#Reference">References</a>
+		</div>
+
+		<h2 id="Notes">Notes on Telescope Design</h2>
+
+		<p class="byline">by Dale Keller, from Newt 2.5, with minor edits to make it compatible with Newt-Web</p>
+
+		<p>Telescope design is part science and part art. Many of Newt&#39;s 
+		calculations were taken from standard formulas in books.&nbsp; Some were invented out of 
+		necessity by the author.&nbsp; In some cases, more than one formula was available, giving 
+		somewhat different results.&nbsp; There are differing optimizations based on the intended 
+		use of the scope (like planetary vs. deep sky work). And of course, every telescope builder 
+		has his or her opinion of the &quot;correct&quot; way to do something. So take this advice or ignore 
+		it as you see fit.</p>
+
+		<p>The purpose of a telescope is to collect light from a distant 
+		object, bring it to a clear and undistorted focus, magnify it, and deliver it to a detector 
+		(your eye, a camera, etc.).</p>
+
+		<p>Many factors can interrupt or distort the flow of light in a 
+		telescope, degrading the image quality.&nbsp; That is the reason for Newt - to quickly find 
+		the problem areas in a design, adjust variables, and check the results.</p>
+
+		<h3>Design Issues</h3>
+
+		<h4 id="Vignetting">Vignetting</h4>
+
+		<p class="def"><b>Vignetting</b>: A reduction of the amount of light reaching the focal plane by objects intruding into the light path.</p>
+
+		<p>Vignetting occurs when the cone of light strikes an object in 
+		it&#39;s path before it reaches the eyepiece.&nbsp; The most common problem area is the inside 
+		diameter of the focuser. To see where the light cone might strike the focuser, look at the Ray Trace tab.</p>
+
+		<p>A tall focuser increases the probability of vignetting. A narrow 
+		focuser does the same thing.&nbsp; Many telescopes are built with the standard 1&frac14; inch by 
+		3&frac12; inch focuser. At any focal ratio less than about f/10, this can cut off a fair amount 
+		of the light cone.&nbsp; Using a low profile, wide focuser is one of the easiest ways to 
+		improve a telescope.</p>
+
+		<p>Even if the 75% zone light cone just passes through the focuser, 
+		it can help to alter the focuser.&nbsp; What the eyepiece sees is all of the 100% zone, all 
+		of the 75% zone, and then a very sharp falloff of light to zero.&nbsp; No 50% zone is 
+		available at all.&nbsp; This will effect a low power, wide angle eyepiece the most, because 
+		this eyepiece has a very large field lens.&nbsp; If the lens is wider than the 75% zone, it 
+		will get very little light near the edges of the field of view.</p>
+
+		<p>Another place vignetting occurs is at the front end of the tube.&nbsp; 
+		Notice in the WHITE example that the 75% ray strikes the tube wall near the front.&nbsp; 
+		This means that the 75% zone is reduced in size, and there is a sharp cutoff of light at 
+		it&#39;s edge.&nbsp; To solve this problem, increase the diameter of the tube.&nbsp; See the 
+		sample WHITE telescope for a 6 inch f/8 telescope (this is the default telescope which is 
+		displayed when Newt is started).</p>
+
+		<h4 id="Glare">Glare</h4>
+
+		<p class="def"><b>Glare</b>: Stray light reflected in the telescope which 
+		interferes with the light from the object of interest.</p>
+
+		<p>A very common problem in Newtonian telescopes is glare. An easy 
+		way to check a telescope for strong glare is to view a star near the moon, but with the moon 
+		just outside of the field of view.&nbsp; The light from the moon, shining on the inside of 
+		the tube wall, bounces around trying to get into the observers eye.&nbsp; This stray light 
+		brightens the whole field, reducing contrast.&nbsp; The same thing happens even when the 
+		telescope is pointed away from the moon - city lights, bright planets, and even fairly faint 
+		sky glow can get into places it shouldn&#39;t and reduce contrast.</p>
+
+		<p>One way to reduce glare is to install baffles in the tube. If 
+		these baffles closely match the desired cone of incoming light, and are spaced properly, 
+		then most of the stray light coming from other directions will hit a baffle instead of 
+		finding it&#39;s way to the eyepiece.&nbsp; A rough, very flat black surface inside the tube 
+		walls will also help to soak up stray light.</p>
+
+		<p><i>Note: Baffles which closely match the light cone can cause 
+		another problem - tube current eddies.&nbsp; See the <a href="#AtmosphericDistortion">Atmospheric Distortion</a> section of this 
+		help file.</i></p>
+
+		<p>Adding baffles to a telescope can sometimes improve image 
+		contrast enough to allow the observer to detect very faint details which could not be seen 
+		before.</p>
+
+		<p>There are many ways to make baffles.&nbsp; Thin wooden or metal 
+		ones are the most accurate and professional. One simple suggestion is to use foam 
+		weather stripping for sealing doors - available at any hardware store.&nbsp; The foam should 
+		have a rough surface to soak up light. Fortunately, this type of foam is less expensive than 
+		the higher density, slick type. The tape backing will not hold up under the temperature 
+		range a telescope is used in, so it should be glued in place.&nbsp; A couple coats of very 
+		flat black paint should be applied.</p>
+
+		<p>The algorithm used by Newt to calculate the position and diameter 
+		of the baffles only works for the lower end of the telescope.&nbsp; Newt adds one baffle at 
+		the top, and one baffle on either side of the focuser.&nbsp; In actual practice, several 
+		baffles should be added above and below the focuser to create as much shadow as possible on 
+		the inside tube wall opposite the focuser.</p>
+
+		<h4 id="ImproperDesign">Improper Design</h4>
+
+		<p class="def"><b>Improper Design</b>: Mismatched optics which do not allow the 
+		full light cone to reach the focal plane unimpeded.</p>
+
+		<p>To deliver as much light as possible to the focal plane, the 
+		primary mirror, diagonal mirror, and all other components must match.&nbsp; Too small a 
+		diagonal will produce a very small or non-existent zone of 100% illumination.&nbsp; Too 
+		large a diagonal will block some of light from reaching the primary mirror and reduce 
+		contrast.&nbsp; A compromise must be reached between 100% light zone size and contrast loss.</p>
+
+		<p>A telescope designed for planetary and high power use will 
+		usually use shorter focal length eyepieces.&nbsp; These eyepieces have a fairly small field 
+		lens and don&#39;t need a large 100% zone.&nbsp; Only the central area of the field needs to be 
+		fully illuminated, because that is where the object of interest is placed for viewing.&nbsp; 
+		The focal ratio of the telescope is also fairly high, f/10 or more, so the light cone is 
+		very narrow.&nbsp; Therefore a small diagonal mirror can be used which will not reduce the 
+		contrast very much.&nbsp; High contrast is very desirable for planetary detail.&nbsp; See 
+		the RED sample telescope for a 6&quot; f/11 planetary telescope.</p>
+
+		<p>A telescope designed for deep sky, low and medium power use will 
+		most often use longer focal length eyepieces.&nbsp; These eyepieces have a larger field 
+		lens, and need a correspondingly larger 100% illuminated zone.&nbsp; The entire field should 
+		be illuminated as much as possible, so objects near the edge of the field of view are not 
+		dim.&nbsp; This requires care to keep the 75% and 50% zones from being vignetted.&nbsp; A 
+		larger diagonal mirror should be used. However, image contrast is still very important for 
+		seeing faint detail in extended objects. Using too large a diagonal can produce larger zones 
+		at the cost of degrading image quality.&nbsp; See the BLUE sample&nbsp; for a 10&quot; f/5.6 
+		deep-sky telescope</p>
+
+		<p>If at all possible, the minor axis of the diagonal should be kept 
+		under 20% of the diameter of the primary mirror.&nbsp; This will keep the contrast high, 
+		which is so important for both planetary detail and detail in faint extended objects.</p>
+
+		<p>Some sizes of telescope are just hard to make work.&nbsp; A small 
+		diameter primary mirror and a short focal ratio make a poor telescope.&nbsp; The short focal 
+		ratio wants a larger diagonal and a low profile focuser, but the focuser does not shrink in 
+		proportion with the tube size.&nbsp; There is also a limit on how much the clearance can be 
+		reduced between the edge of the primary mirror and the tube walls.&nbsp; These two factors 
+		cause a large percent of the light cone to be used up reaching from the diagonal to the 
+		focal plane.&nbsp; This forces the use of a larger diagonal.&nbsp; See the BLACK example for a 4&frac14; inch f/4 telescope.</p>
+
+		<h4 id="AtmosphericDistortion">Atmospheric Distortion</h4>
+
+		<p class="def"><b>Atmospheric Distortion</b> Moving or variable-temperature air 
+		above or inside the telescope which distorts the image.</p>
+
+		<p>Much has been said in books and magazines on reducing air 
+		currents above and inside a telescope.&nbsp; The only idea covered here regards the design 
+		of the light baffles. In an open tube design, there will always be tube currents. Some 
+		telescope makers use an oversize tube to allow the inevitable currents to stay near the 
+		walls, out of the light path.&nbsp; Baffling a tube to reduce glare can interfere with this 
+		current, causing the air to flow into the light path as it moves past the baffle (tube 
+		current eddies).&nbsp; This can cause severe image distortion, wavy images, double images, 
+		and other problems.</p>
+
+		<p>To solve this problem, the baffles can be made fairly shallow, 
+		and placed closer together.&nbsp; This allows the air moving near the tube walls to flow 
+		closer and stay out of the light path.&nbsp; Newt-Web has an option (on the Specifications 
+		tab) to use fixed diameter baffles.&nbsp; When this option is on, all the baffles will be 
+		the same diameter as the front baffle. The front baffle diameter is designed to be the same 
+		diameter as the 75% zone cone of light as it passes through the front of the telescope.</p>
+
+		<h4 id="IlluminationSize">Illumination Size</h4>
+
+		<p class="def"><b>Illumination Size</b>: The size of the area at the focal plane 
+		(the virtual image) illuminated by the primary optics.</p>
+
+		<h5>General:</h5>
+
+		<p>The focal plane is generally fully illuminated in the center, and 
+		gradually tapers off in brightness toward the edge.&nbsp; A common way of measuring the 
+		illuminated area is by defining the zone of full illumination (the 100% zone), and the area 
+		where the brightness has tapered off to 75%.</p>
+
+		<p>The 100% zone is the area at the focal plane which is fully 
+		illuminated by the primary mirror.&nbsp; This area will have 100% of the brightness 
+		available from the primary mirror.&nbsp; This is the area produced by the light cone from 
+		the primary, reflected from the diagonal, as long as there is no vignetting.&nbsp; Changing 
+		the diagonal minor axis is the easiest way to change the size of this zone.</p>
+
+		<p>The 75% zone is the area at the focal plane which is &frac34;
+		illuminated by the primary mirror.&nbsp; This area will be dimmer than the 100% area, 
+		tapering off in brightness from the edge of the 100% zone until only 75% of the brightness 
+		from the primary mirror is available at the edge of the 75% zone.</p>
+
+		<h5 id="VisualUse">Visual Use:</h5>
+
+		<p>An eyepiece will usually have approximately the same field lens 
+		diameter as its focal length.&nbsp; So to fully illuminate the field of a 12 mm eyepiece, a 
+		12 mm (&frac12; inch) area of 100% illumination is required.&nbsp; Full illumination is not 
+		absolutely required, and in fact usually drops off to around 75% near the edges of the 
+		eyepiece field.</p>
+
+		<p>The larger the eyepiece field lens, the larger areas of 100% and 
+		75% illumination required.&nbsp; This is also impacted by the diagonal mirror minor axis and 
+		any possible vignetting by other elements of the telescope, such as the focuser inside 
+		diameter.</p>
+
+		<p>Some practical limit must be reached, however, because increasing 
+		the diagonal size will also decrease contrast and light gathering ability.&nbsp; One 
+		possible rule of thumb is to limit the size of the 100% zone to one half of the field lens 
+		size of the largest eyepiece you expect to use.</p>
+
+		<p>Contrast is very important in a telescope.&nbsp; To see fine 
+		details in planetary images and faint nebulae alike, you need the maximum contrast possible.&nbsp; 
+		In a Newtonian telescope, one of the biggest contrast killers is an oversized diagonal 
+		mirror.&nbsp; If possible, the diagonal minor axis should be kept under 20% of the diameter 
+		of the primary mirror.&nbsp; This is easy with high focal ratio telescopes but can be very 
+		difficult with shorter focal ratios.&nbsp; See the <a href="#ImproperDesign">Improper Design</a> section.</p>
+
+		<h5 id="PhotographicUse">Photographic Use:</h5>
+
+		<p>Generally, to attain the brightest image (and utilize the full 
+		potential of the telescope&#39;s light gathering ability), the film in the camera should be as 
+		fully illuminated as possible.&nbsp; This requires a substantially larger diagonal mirror 
+		than does visual work.</p>
+
+		<p>In a 35mm camera, the short dimension of the film is 24mm (about 
+		1 inch).&nbsp; The camera body requires the focal plane to be moved farther out from the 
+		focuser as well. Adding 2 inches of focal plane height for the camera body, and requiring a 
+		1 inch area of 100% illumination will call for a fairly large diagonal mirror.</p>
+
+		<p>The other components of the telescope must be redesigned to 
+		accommodate photographic work.&nbsp; The focuser inside diameter must be larger to prevent 
+		vignetting of the light cone, and the diagonal mirror spider mount must be strong enough to 
+		prevent the heavier mirror from vibrating or sagging.</p>
+
+		<p>A telescope which is optimized for photographic use does not 
+		usually perform well for visual work.</p>
+
+		<h4 id="SpareFocuserTravel">Spare Focuser Travel</h4>
+
+		<p class="def"><b>Spare Focuser Travel:</b> The extra amount of travel the 
+		focuser can move inward from the point where the image is in focus.</p>
+
+		<p>This is the distance from the top of the focuser tube (when 
+		racked all the way in) to the focal plane (where the light from the primary mirror comes to 
+		a focus).&nbsp; Some eyepieces focus farther in than others.&nbsp; Shorter focal lengths 
+		usually need to be racked farther in than longer ones.</p>
+
+		<p><i>Note: If you will be using the telescope for terrestrial viewing, 
+		you will need some extra &quot;out&quot; travel to focus on objects which are closer than the heavenly 
+		bodies.&nbsp; You will usually have more spare &quot;out&quot; travel than &quot;in&quot; travel.</i></p>
+
+		<p>The amount of &quot;Spare Focuser In Travel&quot; should usually be about &frac12; inch.</p>
+
+		<p>One way to set up a telescope right on the first try (and to 
+		avoid drilling focuser holes and mirror mount holes all over the place) is to design the 
+		scope with about &frac12; inch spare travel.&nbsp; Then, using the calculated measurements for 
+		component placement, mount the diagonal mirror and the focuser and place an eyepiece in the 
+		focuser.&nbsp; Mount the primary mirror in it&#39;s mirror cell, and get an assistant to slide 
+		the mirror into the calculated position in the tube. Try to focus on a VERY distant object.&nbsp; 
+		The assistant should slide the primary mirror in and out until the object comes into focus.&nbsp; 
+		Mark this position, remove the optics, and then drill the holes for the primary mirror 
+		mount.&nbsp; Using an object that is not far enough away to focus upon will give an improper 
+		result.&nbsp; An object at least &frac12; mile distant would be the minimum.</p>
+
+		<p>Another way to get the proper Spare Travel is to measure where 
+		each eyepiece&#39;s focal plane lies in relation to it&#39;s seating position in the focuser.&nbsp; 
+		The field stop in an eyepiece is usually at the eyepiece&#39;s focal plane.&nbsp; This focal 
+		plane must coincide with the primary mirror&#39;s focal plane for an image to be in focus.&nbsp; 
+		Measure the distance from the bottom of the eyepiece tube (the part that slides into the 
+		focuser) to the field stop.&nbsp; Then measure the distance from the bottom of the eyepiece 
+		tube to where the eyepiece stops in the focuser (the top of the part that slides into the 
+		focuser).&nbsp; If the field stop sits down in the focuser tube, you will have to rack the 
+		focuser out to reach focus.&nbsp; If the field stop sits above the focuser tube, you MUST 
+		add some extra &quot;in&quot; travel to move the eyepiece in far enough to focus.&nbsp; The amount to 
+		add is the distance of the field stop above the focus tube, plus any safety margin desired.</p>
+
+		<h4 id="UsingACamera">Using a Camera</h4>
+
+		<p class="def"><b>Camera</b>: a frustrating infernal contraption which captures your soul in a little box &lt;grin&gt;.</p>
+
+		<p>If you will only use the telescope visually, use Zero for the 
+		variable &quot;Additional Height for Camera&quot;.&nbsp; If you will be using a camera, enter the 
+		amount of additional height for the focal plane above the focal plane used for eyepieces. 
+		This is usually about 2 inches for 35 mm Single Lens Reflex cameras.&nbsp; You should also 
+		add any height required for an off-axis guider.&nbsp; This is usually three quarters to one 
+		inch.</p>
+
+		<p>This will increase the probability of vignetting the light cone, 
+		because a larger conic section will have to fit through the focuser and other parts of the 
+		telescope to reach the focal plane.&nbsp; For this reason, a telescope designed for camera 
+		use should have the lowest and widest possible focuser.</p>
+
+		<p>The size of the diagonal mirror should also be taken into 
+		account.&nbsp; A larger diagonal may be required to accommodate the 100% zone desired.&nbsp; 
+		This will decrease contrast and block more light from the primary mirror.&nbsp; A telescope 
+		should be designed for either visual or photographic work if possible, although a dual 
+		purpose scope can be built with some compromises.&nbsp; See <a href="#IlluminationSize">Illumination Size</a>.</p>
+
+		<h3 id="Reference">References</h3>
+
+		<p>A few good books on telescope design are:</p>
+
+		<ul>
+		<li><b>All About Telescopes</b> by Sam Brown from Edmund Scientific</li>
+
+		<li><b>Newtonian Notes</b> by Peter Francis from Kenneth Novak &amp; Co.</li>
+
+		<li><b>Telescope Optics, Evaluation, and Design</b> by Rutten and van Venrooij (<i>source of 
+		the baffle calculations</i>)</li>
+
+		<li><b>Amateur Telescope Makers Journal</b> (periodical) published by the Amateur Telescope 
+		Makers Association (<i>no longer published</i>)</li>
+		</ul>
+
+		<p>There are many others, mostly at a higher cost, that are very 
+		good.&nbsp; There are some, also at a higher cost, that are a waste of money.&nbsp; You&#39;ll 
+		have to discern for yourself.</p>
+
+</div></div>			
+</body></html>
